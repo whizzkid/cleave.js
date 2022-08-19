@@ -1009,6 +1009,7 @@ var DefaultProperties = {
         target.stripLeadingZeroes = opts.stripLeadingZeroes !== false;
         target.signBeforePrefix = !!opts.signBeforePrefix;
         target.tailPrefix = !!opts.tailPrefix;
+		target.forceAsDecimalInput = opts.forceAsDecimalInput;
 
         // others
         target.swapHiddenInput = !!opts.swapHiddenInput;
@@ -1223,8 +1224,30 @@ Cleave.prototype = {
     },
 
     onKeyDown: function (event) {
-        var owner = this,
-            charCode = event.which || event.keyCode;
+        var owner = this;
+        var charCode = event.which || event.keyCode;
+		// Deviant
+		// change key in forceAsDecimalInput to the specified numeralDecimalMark
+		// in studiereader, change . to a , when typed.
+		if (owner.properties.forceAsDecimalInput)
+		{
+			if (event.key === owner.properties.forceAsDecimalInput)
+			{
+				event.preventDefault();
+				var start = this.element.selectionStart;
+				var end = this.element.selectionEnd;
+				var val = this.element.value;
+				// only do this if there's not already a decimal mark present
+				var sliced = val.slice(0, start) + val.slice(end);
+				if (sliced.indexOf(owner.properties.numeralDecimalMark)==-1)
+				{
+					this.element.value = val.slice(0, start) + owner.properties.numeralDecimalMark + val.slice(end);
+					this.onInput(this.element.value);
+					this.element.selectionStart = this.element.selectionEnd = start + 1;
+				}
+				return;
+			}
+		}
 
         owner.lastInputValue = owner.element.value;
         owner.isBackward = charCode === 8;

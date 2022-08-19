@@ -179,15 +179,14 @@ Cleave.prototype = {
 				event.preventDefault();
 				var start = this.element.selectionStart;
 				var end = this.element.selectionEnd;
-				let val = this.element.value;
+				var val = this.element.value;
+				// only do this if there's not already a decimal mark present
 				var sliced = val.slice(0, start) + val.slice(end);
 				if (sliced.indexOf(owner.properties.numeralDecimalMark)==-1)
 				{
-					// only do this if there's not already a decimal mark present
 					this.element.value = val.slice(0, start) + owner.properties.numeralDecimalMark + val.slice(end);
 					this.onInput(this.element.value);
-					this.element.selectionStart = start;
-					this.element.selectionEnd = start;
+					this.element.selectionStart = this.element.selectionEnd = start + 1;
 				}
 				return;
 			}

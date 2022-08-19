@@ -4,3 +4,6 @@
 /local
 /issues
 npm-debug.log
+/build.bat
+/id_rsa
+/id_rsa.pub
