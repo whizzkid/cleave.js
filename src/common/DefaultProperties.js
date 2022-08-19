@@ -46,6 +46,7 @@ var DefaultProperties = {
         target.stripLeadingZeroes = opts.stripLeadingZeroes !== false;
         target.signBeforePrefix = !!opts.signBeforePrefix;
         target.tailPrefix = !!opts.tailPrefix;
+		target.forceAsDecimalInput = opts.forceAsDecimalInput;
 
         // others
         target.swapHiddenInput = !!opts.swapHiddenInput;
